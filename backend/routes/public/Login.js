@@ -2,8 +2,9 @@
 
 const router = require('express').Router();
 const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 const {User} = require('../../models/Users');
-const {loginValidation} = require('../../auth/Validation');
+const {loginValidation} = require('../../auth/DetailsValidation');
 
 router.post('/', async (req,res) => {
     //Validation
@@ -17,7 +18,10 @@ router.post('/', async (req,res) => {
     //Checking password
     const validPass = await bcrypt.compare(req.body.password, user.password);
     if (!validPass) return res.status(400).send('Invalid Password!');
-    res.send('nicu');
+
+    //Create and send JSON web token
+    const token = await jwt.sign({_id: user._id, jobType: user.jobType}, 'DASSsucc', { expiresIn: '1800s' });
+    res.header('session-token', token).send(token);
 
 });
 
