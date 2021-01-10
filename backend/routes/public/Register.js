@@ -1,7 +1,7 @@
 //Registering a User
 
 const router = require('express').Router();
-const bcrypt = require('bcryptjs')
+const bcrypt = require('bcryptjs');
 const {User} = require('../../models/Users');
 const {registerValidation} = require('../../auth/Validation');
 
@@ -29,8 +29,7 @@ router.post('/', async (req,res) => {
     //Adding user to DB
     try {
         const savedUser = await user.save();
-        console.log('A user has been added!');
-        res.status(200).send(savedUser);
+        res.status(200).send('User Registered, Please login !');
     }catch(err) {
         res.status(400).send(err);
     }

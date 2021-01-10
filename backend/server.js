@@ -7,14 +7,16 @@ const uri = 'mongodb+srv://user123:user123@cluster0.6a9ks.mongodb.net/test?retry
 mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true } ,() => console.log('Connected to DB!'));
 
 //Creating Routes
+//Public
 const registerRoute = require('./routes/public/Register');
-
+const loginRoute = require('./routes/public/Login');
 
 //Middlewares
 app.use(express.json());
 
 //Route Middlewares
 app.use('/api/register', registerRoute);
+app.use('/api/login', loginRoute);
 
 
 app.listen(3000, () => console.log('Connected to Port successfully!'));
