@@ -5,11 +5,13 @@ const Schema = mongoose.Schema;
 const UserSchema = new Schema({
 	jobType: {
 		type: String,
-		required: true
+		required: true,
+		trim: true
 	},
 	email: {
 		type: String,
-		required: true
+		required: true,
+		trim: true
     },
     password: {
         type: String,
@@ -21,4 +23,4 @@ const UserSchema = new Schema({
 	}
 });
 
-module.exports.User = mongoose.model("Users", UserSchema);
+module.exports = mongoose.model("Users", UserSchema);

@@ -19,4 +19,4 @@ app.use('/api/register', registerRoute);
 app.use('/api/login', loginRoute);
 
 
-app.listen(3000, () => console.log('Connected to Port successfully!'));
+app.listen(3000, () => console.log('Connected to Port 3000 successfully!'));
