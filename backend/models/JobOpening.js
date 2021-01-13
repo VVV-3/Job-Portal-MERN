@@ -11,7 +11,7 @@ const JobOpeningSchema = new Schema({
     },
     recruiter: {
         type: Schema.Types.ObjectId,
-        ref: 'Recruiter who made the job opening'
+        ref: 'Recruiters'
     },
     maxApplicants: {
         type: Number,
@@ -35,7 +35,7 @@ const JobOpeningSchema = new Schema({
     skills: [
         {
             type: Schema.Types.ObjectId,
-            ref: 'Skill'
+            ref: 'Skills'
         }
     ],
     jobType: {
@@ -66,6 +66,13 @@ const JobOpeningSchema = new Schema({
             min: 0,
             default: 0
         }
+    },
+    state: {
+        type: String,
+        required: true,
+        trim: true,
+        enum: ["open","filled","closed"],
+        default: "open",
     },
     date:{
 		type: Date,

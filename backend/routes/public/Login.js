@@ -4,6 +4,8 @@ const router = require('express').Router();
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../../models/User');
+const Applicant = require('../../models/Applicant');
+const Recruiter = require('../../models/Recruiter');
 const {loginValidation} = require('../../auth/DetailsValidation');
 
 router.post('/', async (req,res) => {
@@ -21,7 +23,26 @@ router.post('/', async (req,res) => {
 
     //Create and send JSON web token
     const token = await jwt.sign({_id: user._id, jobType: user.jobType}, 'DASSsucc', { expiresIn: '1800s' });
-    res.header('session-token', token).send(token);
+    
+    //Finding ProfileID
+    if (user.jobType === 'applicant') {
+        const profile = await Applicant.findOne({email: user.email});
+        res.header('session-token', token).json({
+            id: user._id,
+            profile_id: profile._id,
+            jobType: user.jobType,
+            email: user.email
+        });
+    }
+    else{
+        const profile = await Recruiter.findOne({email: user.email});
+        res.cookie('session-token', token).json({
+            id: user._id,
+            profile_id: profile._id,
+            jobType: user.jobType,
+            email: user.email
+        });
+    }
 
 });
 

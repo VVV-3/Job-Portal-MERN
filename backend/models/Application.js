@@ -6,21 +6,20 @@ const ApplicationSchema = new Schema({
     jobOpening: {
         type: Schema.Types.ObjectId,
         required: true,
-        ref: 'Job Opening'
+        ref: 'Jobopenings'
     },
     applicant: {
         type: Schema.Types.ObjectId,
         required: true,
-        ref: 'Applicant'
+        ref: 'Applicants'
     },
     sop: {
         type: String,
         required: true,
-
-    },
-    validate: {
-        validator: (msg) => msg.split(" ").length <= 250,
-        message: "Word limit exceeded!",
+        validate: {
+            validator: (msg) => msg.split(" ").length <= 250,
+            message: "Word limit exceeded!",
+        }
     },
     state: {
         type: String,

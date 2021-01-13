@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 // Create Schema
-const ApplicantSchema = new Schema({
+const ApplicantSchema = new Schema ({
 	email: {
 		type: String,
         required: true,
@@ -15,7 +15,7 @@ const ApplicantSchema = new Schema({
     },
     education: [
         {
-            InstituteName: {
+            instituteName: {
                 type: String,
                 required: true,
                 trim: true,
@@ -33,7 +33,7 @@ const ApplicantSchema = new Schema({
     skills: [
         {
             type: mongoose.Schema.Types.ObjectId,
-            ref: "Skill"
+            ref: "Skills"
         },
     ],
     rating: {
