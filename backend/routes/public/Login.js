@@ -22,12 +22,13 @@ router.post('/', async (req,res) => {
     if (!validPass) return res.status(400).send('Invalid Password!');
 
     //Create and send JSON web token
-    const token = await jwt.sign({_id: user._id, jobType: user.jobType}, 'DASSsucc', { expiresIn: '1800s' });
+    //const token = await jwt.sign({_id: user._id, jobType: user.jobType}, 'DASSsucc', { expiresIn: '18000s' });
     
     //Finding ProfileID
     if (user.jobType === 'applicant') {
         const profile = await Applicant.findOne({email: user.email});
-        res.header('session-token', token).json({
+        const token = await jwt.sign({id: user._id, profile_id:profile._id, jobType: user.jobType}, 'DASSsucc', { expiresIn: '18000s' });
+        res.cookie('session-token', token).json({
             id: user._id,
             profile_id: profile._id,
             jobType: user.jobType,
@@ -36,6 +37,7 @@ router.post('/', async (req,res) => {
     }
     else{
         const profile = await Recruiter.findOne({email: user.email});
+        const token = await jwt.sign({id: user._id, profile_id:profile._id, jobType: user.jobType}, 'DASSsucc', { expiresIn: '18000s' });
         res.cookie('session-token', token).json({
             id: user._id,
             profile_id: profile._id,

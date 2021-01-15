@@ -1,12 +1,12 @@
 //jobOpening operations
 
 const router = require('express').Router();
-const JobOpening = require('../../../models/JobOpening');
+const JobOpening = require('../../models/JobOpening');
 const mongoose = require('mongoose');
-//const verify = require('../../../auth/TokenValidation');
+//const verify = require('../../auth/TokenValidation');
 
 //make jobOpening
-router.post('/make/:recruiterId', async (req,res) => {
+router.post('/add/:recruiterId', async (req,res) => {
     //create a document
     const job = new JobOpening({
         title: req.body.title,
@@ -29,10 +29,10 @@ router.post('/make/:recruiterId', async (req,res) => {
     }
 });
 
-//find jobOpenings for certain recruiter
-router.get('/find/:recruiterId', async (req,res) => {
+//find jobOpenings
+router.get('/find', async (req,res) => {
     try {
-        const jobs = await JobOpening.find({$and:[ {recruiter: mongoose.Types.ObjectId(req.params.recruiterId)}, {$or:[ {state:"open"}, {state:"filled"} ]} ]} ).populate('skills').populate('recruiter');
+        const jobs = await JobOpening.find( req.query ).populate('skills').populate('recruiter');
         res.status(200).json(jobs);
     } catch (error) {
         res.status(400).send(error);
@@ -41,19 +41,12 @@ router.get('/find/:recruiterId', async (req,res) => {
 
 //edit a certain jobOpening
 router.post('/edit/:id', async (req, res) => {
-
-    JobOpening.findByIdAndUpdate(req.params.id, { $set: req.body }, {new: true}, (err, job) => {
-        if (err) return res.status(400).json(err);
+    try {
+        const job = await JobOpening.findOneAndUpdate(req.params.id, { $set: req.body }, {new: true}).populate('skills').populate('recruiter');
         res.status(200).send(job);
-    });
-});
-
-//delete a certain jobOpening
-router.post('/delete/:id', async (req,res) => {
-    JobOpening.findByIdAndUpdate(req.params.id, { $set: {state: 'closed'} }, (err, job) => {
-        if (err) return res.status(400).json(err);
-        res.status(200).send('deleted boi!');
-    });
+    } catch (error) {
+        res.status(400).json(error);
+    }
 });
 
 module.exports = router;

@@ -11,10 +11,15 @@ const UserSchema = new Schema({
 	email: {
 		type: String,
 		required: true,
-		trim: true
+		trim: true,
+		validate: {
+			validator: v => /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/.test(v),
+			message: "enter proper email dumbass!"
+		}
     },
     password: {
-        type: String,
+		type: String,
+		minlength: 8,
         required: true
     },
 	date:{

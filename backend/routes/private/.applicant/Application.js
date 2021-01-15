@@ -23,10 +23,10 @@ router.post('/make/:applicantId/:jobId', async (req,res) => {
     }
 });
 
-//find all applications for given applicantId
-router.get('/find/:applicantId', async (req,res) => {
+//find all applications
+router.get('/find/', async (req,res) => {
     try {
-        const applications = await Application.find({recruiter: mongoose.Types.ObjectId(req.params.recruiterId)});
+        const applications = await Application.find({applicant: mongoose.Types.ObjectId(req.params.applicantId)}).populate('jobOpening').populate('applicant');
         res.status(200).json(applications);
     } catch (error) {
         res.status(400).send(error);

@@ -5,20 +5,24 @@ const router = require('express').Router();
 const Applicant = require('../../../models/Applicant');
 
 //find a profile
-router.get('/find/:id', (req,res) => {    
-    Applicant.findById(req.params.id, (err,applicant) => {
-        if(err) return res.status(400).send(err);
+router.get('/find/:id', async (req,res) => {  
+    try {
+        const applicant = await Applicant.findById(req.params.id).populate('skills');
         res.status(200).json(applicant);
-    });
+    } catch (error) {
+        res.status(400).json(error);
+    }  
 });
 
 
 //edit a profile
 router.post("/edit/:id", async (req, res) => {
-    Applicant.findByIdAndUpdate(req.params.id, { $set: req.body }, (err, applicant) => {
-        if (err) return res.status(400).json(err);
+    try {
+        const applicant = await Applicant.findByIdAndUpdate(req.params.id, { $set: req.body });
         res.status(200).json(applicant);
-    });
+    } catch (error) {
+        res.status(400).json(error);
+    };
 });
 
 module.exports = router;
