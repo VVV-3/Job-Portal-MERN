@@ -6,7 +6,11 @@ const ApplicantSchema = new Schema ({
 	email: {
 		type: String,
         required: true,
-        trim: true
+        trim: true,
+		validate: {
+			validator: v => /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/.test(v),
+			message: "enter proper email dumbass!"
+		}
     },
     name: {
         type: String,

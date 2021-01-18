@@ -6,7 +6,8 @@ const UserSchema = new Schema({
 	jobType: {
 		type: String,
 		required: true,
-		trim: true
+		trim: true,
+		enum: ['applicant', 'recruiter']
 	},
 	email: {
 		type: String,
@@ -19,7 +20,7 @@ const UserSchema = new Schema({
     },
     password: {
 		type: String,
-		minlength: 8,
+		minlength: [8,'Password needs to be atleast 8 characters long'],
         required: true
     },
 	date:{
