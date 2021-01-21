@@ -64,4 +64,4 @@ app.use('/api/skill', skillRoute);
 // app.use('/api/recruiter/applicant',recruiterApplicantRoute);
 // app.use('/api/recruiter/rating', recruiterRatingRoute);
 
-app.listen(3000, () => console.log('Connected to Port 3000 successfully!'));
+app.listen(5000, () => console.log('Connected to Port 5000 successfully!'));

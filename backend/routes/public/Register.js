@@ -9,6 +9,7 @@ const {registerValidation} = require('../../auth/DetailsValidation');
 
 
 router.post('/', async (req,res) => {
+    console.log(req.body);
     //Validation
     //const {error} = registerValidation(req.body);
     //if (error) return res.status(400).send(error.details[0].message);
@@ -31,6 +32,7 @@ router.post('/', async (req,res) => {
     //Adding user to DB
     try {
         const savedUser = await user.save();
+        
         res.status(200).send('User Registered, Please login !');
     }catch(err) {
         res.status(400).send(err);
