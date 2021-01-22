@@ -1,6 +1,6 @@
 import { useState, useContext } from "react";
 import { useForm } from "react-hook-form";
-import { useHistory, Link } from "react-router-dom";
+import { useHistory, Link, Redirect } from "react-router-dom";
 import axios from "axios";
 import {
   Form,
@@ -33,6 +33,9 @@ function Login() {
           user_id: res.data.id,
           jobType: data.jobType,
         });
+        localStorage.setItem("id", res.data.profile_id);
+        localStorage.setItem("user_id", res.data.id);
+        localStorage.setItem("jobType", data.jobType);
         console.log(user);
         // if( data.jobType === 'recruiter' ) {
         //   history.push('/');
@@ -46,6 +49,7 @@ function Login() {
         setTimeout(() => setErr(false), 3000);
       });
   }
+  if (user.id !== null) return <Redirect to="/" />;
 
   return (
     <Container>

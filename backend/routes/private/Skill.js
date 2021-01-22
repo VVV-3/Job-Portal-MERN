@@ -6,6 +6,7 @@ const Skill = require('../../models/Skill');
 
 //add new skill
 router.post('/add', async (req,res) => {
+    console.log(req.body.name);
     const skill = new Skill({
         name: req.body.name
     });

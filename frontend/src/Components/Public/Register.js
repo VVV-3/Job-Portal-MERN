@@ -1,6 +1,6 @@
 import { useState, useContext } from "react";
 import { useForm } from "react-hook-form";
-import { useHistory } from "react-router-dom";
+import { useHistory, Redirect } from "react-router-dom";
 import axios from "axios";
 import {
   Form,
@@ -15,7 +15,6 @@ import {
 } from "reactstrap";
 import { UserContext } from "App";
 
-
 function Register() {
   const { user, setUser } = useContext(UserContext);
   const history = useHistory();
@@ -29,13 +28,12 @@ function Register() {
         headers: { "Content-Type": "application/json" },
       })
       .then((res) => {
-        setUser({email:data.email, jobType:data.jobType});
+        setUser({ email: data.email, jobType: data.jobType });
         setTimeout(() => setErr(false), 3000);
-        if( data.jobType === 'recruiter' ) {
-          history.push('/Register_R');
-        }
-        else if( data.jobType === 'applicant') {
-          history.push('/Register_A');
+        if (data.jobType === "recruiter") {
+          history.push("/Register_R");
+        } else if (data.jobType === "applicant") {
+          history.push("/Register_A");
         }
       })
       .catch((err) => {
@@ -44,6 +42,7 @@ function Register() {
       });
   }
 
+  if (user.id !== null) return <Redirect to="/" />;
   return (
     <Container fluid>
       {err && <Alert color="danger">{err}</Alert>}
