@@ -34,6 +34,7 @@ function Register_R() {
       .then((res) => {
         setUser(false);
         console.log(res.data);
+        history.push('/');
       })
       .catch((err) => {
         setErr(err.response.data);
