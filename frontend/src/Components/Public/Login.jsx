@@ -37,14 +37,9 @@ function Login() {
         localStorage.setItem("user_id", res.data.id);
         localStorage.setItem("jobType", data.jobType);
         console.log(user);
-        // if( data.jobType === 'recruiter' ) {
-        //   history.push('/');
-        // }
-        // else if( data.jobType === 'applicant') {
-        //   history.push('/');
-        // }
       })
       .catch((err) => {
+        console.log(err);
         setErr(err.response.data);
         setTimeout(() => setErr(false), 3000);
       });

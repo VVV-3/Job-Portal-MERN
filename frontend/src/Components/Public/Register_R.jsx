@@ -35,9 +35,9 @@ function Register_R() {
         }
       )
       .then((res) => {
-        setUser(false);
+        setUser({jobType: null});
         console.log(res.data);
-        history.push("/");
+        history.push("/login");
       })
       .catch((err) => {
         setErr(err.response.data);
