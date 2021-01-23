@@ -2,9 +2,10 @@ import { useState, useContext, useEffect } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { useHistory, Redirect } from "react-router-dom";
 import { UserContext } from "App";
+import '../../../App.css';
 import axios from "axios";
 import Navbar_R from "./Navbar";
-import { Container, Table, Alert } from "reactstrap";
+import { Container, Table, Alert,Button } from "reactstrap";
 
 function JobOpenings_R() {
   const history = useHistory();
@@ -23,12 +24,6 @@ function JobOpenings_R() {
             .map((s) => ({
               postingDate: s.postingDate,
               title: s.title,
-              recruiter_name: s.recruiter.name,
-              salary:s.salary,
-              duration:s.duration,
-              date_deadline:s.deadline,
-              rating:s.rating.numerator/(s.rating.denominator),
-              state:s.state,
               mp:s.maxPositions,
               ma:s.maxApplicants
             }))
@@ -43,20 +38,30 @@ function JobOpenings_R() {
   if (user.id === null) return <Redirect to="/" />;
 
   return (
-    <Container fluid>
+    <Container >
       <Navbar_R />
       {err && <Alert color="danger">{err}</Alert>}
-      <Table size="small">
+      <h2 >Your Job Openings</h2>
+      <body className='loginform'>
+      {openings.map((user, ind) => (
+        <ul key={ind} className='loginform2'>
+          <li>Job Title: {user.title}</li>
+          <li>Posting Date: {user.postingDate}</li>
+          <li>Applicants: {user.ma}</li>
+          <li>Positions Remaining: {user.mp}</li>
+          <Button>Delete posting</Button>
+          <Button>Edit Posting</Button>
+          <Button>See Applicants</Button>
+
+        </ul>
+      ))}
+      </body>
+      
+      {/* <Table size="small">
         <thead>
           <tr>
             <th>Date Posted</th>
             <th>Job Title</th>
-            <th>Recruiter Name</th>
-            <th>Job Rating</th>
-            <th>Salary</th>
-            <th>Duration</th>
-            <th>Deadline</th>
-            <th>State</th>
             <th>Max Positions</th>
             <th>Max Applicants</th>
           </tr>
@@ -66,18 +71,12 @@ function JobOpenings_R() {
             <tr key={ind}>
               <td>{user.postingDate}</td>
               <td>{user.title}</td>
-              <td>{user.recruiter_name}</td>
-              <td>{user.rating}</td>
-              <td>{user.salary}</td>
-              <td>{user.duration}</td>
-              <td>{user.date_deadline}</td>
-              <td>{user.state}</td>
               <td>{user.mp}</td>
               <td>{user.ma}</td>
             </tr>
           ))}
         </tbody>
-      </Table>
+      </Table> */}
     </Container>
   );
 }

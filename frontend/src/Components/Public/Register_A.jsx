@@ -17,7 +17,7 @@ import {
 } from "reactstrap";
 import { UserContext } from "App";
 
-function Register_R() {
+function Register_A() {
   const { user, setUser } = useContext(UserContext);
   const history = useHistory();
   const { register, handleSubmit, errors, control } = useForm();
@@ -116,4 +116,4 @@ function Register_R() {
   );
 }
 
-export default Register_R;
+export default Register_A;

@@ -11,8 +11,12 @@ import Login from "./Components/Public/Login";
 
 import Profile_A from "./Components/Private/Applicant/Profile_A";
 import JobOpenings_A from './Components/Private/Applicant/JobOpening_A';
+
 import Profile_R from "./Components/Private/Recruiter/Profile_R";
 import Jobopenings_R from "./Components/Private/Recruiter/JobOpenings_R";
+import MakeJobOpenings_R from './Components/Private/Recruiter/MakeJobOpening_R';
+
+
 import Logout from "Components/Public/Logout";
 
 export const UserContext = createContext();
@@ -58,6 +62,9 @@ function App() {
         </Route>
         <Route path="/jobOpenings_r">
           <Jobopenings_R />
+        </Route>
+        <Route path="/makeJobOpenings_r">
+          <MakeJobOpenings_R/>
         </Route>
         <Redirect to="/" />
       </Switch>

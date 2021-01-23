@@ -7,6 +7,7 @@ const mongoose = require('mongoose');
 
 //make jobOpening
 router.post('/add/:recruiterId', async (req,res) => {
+    console.log(req.body);
     //create a document
     const job = new JobOpening({
         title: req.body.title,
@@ -25,7 +26,7 @@ router.post('/add/:recruiterId', async (req,res) => {
         const saveJob = await job.save();
         res.status(200).json(saveJob);
     }catch(err) {
-        res.status(400).send(err);
+        res.status(400).json(err);
     }
 });
 

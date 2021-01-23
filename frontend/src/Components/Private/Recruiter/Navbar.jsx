@@ -31,7 +31,7 @@ const Navbar_R = (props) => {
               <NavLink href="/jobOpenings_r">JobOpenings</NavLink>
             </NavItem>
             <NavItem>
-              <NavLink href="/makeJobOpenings">Make JobOpenings</NavLink>
+              <NavLink href="/makeJobOpenings_r">Make JobOpenings</NavLink>
             </NavItem>
             <UncontrolledDropdown nav inNavbar>
               <DropdownToggle nav caret>

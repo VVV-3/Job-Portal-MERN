@@ -71,6 +71,7 @@ router.post('/recruiter', async (req,res) => {
 
 //applicant
 router.post('/applicant', async (req,res) => {
+    console.log(req.body);
 
     //Validating if user exists
     const userExists = await User.findOne({email: req.body.email});

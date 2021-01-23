@@ -5,6 +5,7 @@ import CreatableSelect from "react-select/creatable";
 import { UserContext } from "App";
 import axios from "axios";
 import Navbar_A from "./Navbar";
+import '../../../App.css';
 import {
   Form,
   FormGroup,
@@ -101,6 +102,9 @@ function Profile_A() {
   return (
     <Container>
       <Navbar_A />
+      <br></br>
+      <h4>View and Edit your Profile</h4>
+      <br></br>
       {err && <Alert color="danger">{err}</Alert>}
       <Form onSubmit={handleSubmit(onSub)}>
         <FormGroup>

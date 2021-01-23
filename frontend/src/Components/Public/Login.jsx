@@ -2,6 +2,7 @@ import { useState, useContext } from "react";
 import { useForm } from "react-hook-form";
 import { useHistory, Link, Redirect } from "react-router-dom";
 import axios from "axios";
+import "../../App.css";
 import {
   Form,
   FormGroup,
@@ -37,7 +38,6 @@ function Login() {
         localStorage.setItem("id", res.data.profile_id);
         localStorage.setItem("user_id", res.data.id);
         localStorage.setItem("jobType", data.jobType);
-        console.log(user);
       })
       .catch((err) => {
         console.log(err);
@@ -48,11 +48,12 @@ function Login() {
   if (user.id !== null) return <Redirect to="/" />;
 
   return (
-    <Container>
+    <Container className="loginform">
       Login
       {err && <Alert color="danger">{err}</Alert>}
       <Form onSubmit={handleSubmit(onSub)}>
         <FormGroup>
+          <br></br>
           <Label for="jobType">JobType</Label>
           <Input
             type="select"
@@ -89,9 +90,14 @@ function Login() {
           </FormFeedback>
         </FormGroup>
         <Button>Login</Button>
-        <Link to="/register">
-          <Button>Register</Button>
-        </Link>
+        <FormGroup>
+        <br></br>
+          <Label for="register">New Here? Make an account</Label>
+          <br></br>
+          <Link to="/register">
+            <Button name="register">Register</Button>
+          </Link>
+        </FormGroup>
       </Form>
     </Container>
   );

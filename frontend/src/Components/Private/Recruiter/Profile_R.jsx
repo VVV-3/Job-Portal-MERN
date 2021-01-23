@@ -59,7 +59,10 @@ function Profile_R() {
 
   return (
     <Container>
-      <Navbar_R />
+      <Navbar_R/>
+      <br></br>
+      <h4>View and Edit your Profile</h4>
+      <br></br>
       {err && <Alert color="danger">{err}</Alert>}
       <Form onSubmit={handleSubmit(onSub)}>
         <FormGroup>
@@ -86,13 +89,24 @@ function Profile_R() {
           <FormFeedback>{errors.email && errors.email.message}</FormFeedback>
         </FormGroup>
         <FormGroup>
-          <Label for="bio">bio</Label>
+          <Label for="contactNo">ContactNo</Label>
+          <Input
+            defaultValue={profile.contactNo}
+            name="contactNo"
+            type="text"
+            innerRef={register({ required: "Required" })}
+            invalid={errors.contactNo}
+          />
+          <FormFeedback>{errors.contactNo && errors.contactNo.message}</FormFeedback>
+        </FormGroup>
+        <FormGroup>
+          <Label for="bio">Bio</Label>
           <Input
             defaultValue={profile.bio}
             name="bio"
             type="textarea"
             innerRef={register({ required: "Required" })}
-            invalid={errors.name}
+            invalid={errors.bio}
           />
           <FormFeedback>{errors.bio && errors.bio.message}</FormFeedback>
         </FormGroup>
