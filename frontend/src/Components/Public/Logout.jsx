@@ -4,7 +4,7 @@ function Logout() {
   const history = useHistory();
   function onSub() {
     localStorage.clear();
-    history.push("/");
+    history.push("/login");
   }
   return (
     <Button type="button" onClick={onSub}>

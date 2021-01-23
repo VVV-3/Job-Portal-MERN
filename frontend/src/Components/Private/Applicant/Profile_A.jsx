@@ -1,14 +1,28 @@
 import { useState, useContext, useEffect } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { useHistory, Redirect } from "react-router-dom";
+import CreatableSelect from "react-select/creatable";
 import { UserContext } from "App";
 import axios from "axios";
 import Navbar_A from "./Navbar";
-
+import {
+  Form,
+  FormGroup,
+  Label,
+  Input,
+  FormFeedback,
+  FormText,
+  Container,
+  Button,
+  Alert,
+} from "reactstrap";
 
 function Profile_A() {
+  const history = useHistory();
   const { user, setUser } = useContext(UserContext);
-  const [profile, setProfile] = useState();
+  const { register, handleSubmit, errors, control } = useForm();
+  const [profile, setProfile] = useState(false);
+  const [pskills, setPskills] = useState([]);
   const [skills, setSkills] = useState([]);
   const [err, setErr] = useState(false);
 
@@ -62,9 +76,9 @@ function Profile_A() {
     console.log(saveSkills);
     axios
       .post(
-        "/api/register/applicant",
+        `/api/applicant/edit/${user.id}`,
         {
-          ...data,
+          name: data.name,
           email: user.email,
           skills: saveSkills,
         },
@@ -73,9 +87,7 @@ function Profile_A() {
         }
       )
       .then((res) => {
-        setUser({ jobType: null });
         console.log(res.data);
-        history.push("/login");
       })
       .catch((err) => {
         setErr(err.response.data);
@@ -84,6 +96,7 @@ function Profile_A() {
   }
 
   if (user.id === null) return <Redirect to="/" />;
+  if (!profile) return null;
 
   return (
     <Container>
@@ -93,7 +106,7 @@ function Profile_A() {
         <FormGroup>
           <Label for="name">Name</Label>
           <Input
-            placeholder={profile.name}
+            defaultValue={profile.name}
             name="name"
             type="text"
             innerRef={register({ required: "Required" })}
@@ -104,8 +117,8 @@ function Profile_A() {
         <FormGroup>
           <Label for="email">E-mail</Label>
           <Input
-          readOnly
-          placeholder={profile.email}
+            readOnly
+            defaultValue={profile.email}
             name="email"
             type="email"
             innerRef={register({ required: "Required" })}
@@ -116,6 +129,10 @@ function Profile_A() {
         <FormGroup>
           <Label for="skills">Skills</Label>
           <Controller
+            defaultValue={profile.skills.map((s) => ({
+              value: s._id,
+              label: s.name,
+            }))}
             name="skills"
             control={control}
             as={CreatableSelect}
@@ -126,8 +143,6 @@ function Profile_A() {
         </FormGroup>
         <Button>Submit</Button>
       </Form>
-      <h5>Name: {profile && profile.name}</h5>
-      <h5>Email: {profile && profile.email}</h5>
     </Container>
   );
 }

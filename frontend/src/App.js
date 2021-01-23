@@ -11,6 +11,7 @@ import Login from "./Components/Public/Login";
 
 import Profile_A from "./Components/Private/Applicant/Profile_A";
 import Profile_R from "./Components/Private/Recruiter/Profile_R";
+import Logout from "Components/Public/Logout";
 
 export const UserContext = createContext();
 
@@ -30,7 +31,7 @@ function App() {
     <UserContext.Provider value={{ user, setUser }}>
       <Switch>
         <Route exact path="/">
-          <Home />
+          <Logout />
         </Route>
         <Route path="/login">
           <Login />

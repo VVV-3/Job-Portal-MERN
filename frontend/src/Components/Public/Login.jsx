@@ -28,6 +28,7 @@ function Login() {
         headers: { "Content-Type": "application/json" },
       })
       .then((res) => {
+        console.log(data);
         setUser({
           id: res.data.profile_id,
           user_id: res.data.id,
