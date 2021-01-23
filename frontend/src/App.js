@@ -10,7 +10,9 @@ import Register_A from "./Components/Public/Register_A";
 import Login from "./Components/Public/Login";
 
 import Profile_A from "./Components/Private/Applicant/Profile_A";
+import JobOpenings_A from './Components/Private/Applicant/JobOpening_A';
 import Profile_R from "./Components/Private/Recruiter/Profile_R";
+import Jobopenings_R from "./Components/Private/Recruiter/JobOpenings_R";
 import Logout from "Components/Public/Logout";
 
 export const UserContext = createContext();
@@ -48,8 +50,14 @@ function App() {
         <Route path="/profile_a">
           <Profile_A />
         </Route>
+        <Route path="/jobOpenings_a">
+          <JobOpenings_A/>
+        </Route>
         <Route path="/profile_r">
           <Profile_R />
+        </Route>
+        <Route path="/jobOpenings_r">
+          <Jobopenings_R />
         </Route>
         <Redirect to="/" />
       </Switch>
