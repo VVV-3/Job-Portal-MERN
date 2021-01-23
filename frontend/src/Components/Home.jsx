@@ -6,8 +6,8 @@ function Home() {
   const { user, setUser } = useContext(UserContext);
   if (user.id === null) return <Redirect to="/login" />;
   else {
-    if (user.id && user.jobType === "applicant") return <Redirect to="/profile_a" />;
-    if (user.id && user.jobType === "recruiter") return <Redirect to="/profile_r" />;
+    if (user.id && user.jobType === "applicant") return <Redirect to="/jobOpenings_a" />;
+    if (user.id && user.jobType === "recruiter") return <Redirect to="/jobOpenings_r" />;
   }
   return <Redirect to="/login" />;
 }

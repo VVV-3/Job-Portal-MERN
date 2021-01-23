@@ -3,6 +3,7 @@ import { useForm, Controller } from "react-hook-form";
 import { useHistory, Redirect } from "react-router-dom";
 import CreatableSelect from "react-select/creatable";
 import Education from "./Education";
+import "../../App.css";
 import axios from "axios";
 import {
   Form,
@@ -86,7 +87,10 @@ function Register_A() {
 
   //if (user.id !== null) return <Redirect to="/" />;
   return (
-    <Container fluid>
+    <Container className='loginform'>
+      Register - 2 of 2
+      <br></br>
+      <br></br>
       {err && <Alert color="danger">{err}</Alert>}
       <Form onSubmit={handleSubmit(onSub)}>
         <FormGroup>

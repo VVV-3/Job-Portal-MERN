@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import Logout from "../../Public/Logout";
 import { useHistory, Link, Redirect } from "react-router-dom";
 import {
   Collapse,
@@ -16,13 +17,8 @@ import {
 } from "reactstrap";
 
 const Navbar_A = (props) => {
-
   const history = useHistory();
-  async function logout() {
-    localStorage.clear();
-    history.push("/login");
-  }
-  
+
   const [isOpen, setIsOpen] = useState(false);
 
   const toggle = () => setIsOpen(!isOpen);
@@ -52,9 +48,7 @@ const Navbar_A = (props) => {
                 </DropdownItem>
                 <DropdownItem divider />
                 <DropdownItem>
-                  <NavbarText type="button" onClick={logout}>
-                    Log out
-                  </NavbarText>
+                  <Logout />
                 </DropdownItem>
               </DropdownMenu>
             </UncontrolledDropdown>

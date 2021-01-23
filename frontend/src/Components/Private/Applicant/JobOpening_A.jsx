@@ -18,16 +18,19 @@ function JobOpenings_A() {
     axios
       .get("/api/jobOpening/find")
       .then((res) => {
+        console.log(res.data)
         setOpenings(
           res.data
             .map((s) => ({
               postingDate: s.postingDate,
               title: s.title,
               recruiter_name: s.recruiter.name,
+              skills:s.skills,
               salary:s.salary,
+              jobType:s.jobType,
               duration:s.duration,
               date_deadline:s.deadline,
-              rating:s.rating.numerator/(s.rating.denominator),
+              rating:s.rating.numerator/(s.rating.denominator||1),
               state:s.state,
               mp:s.maxPositions,
               ma:s.maxApplicants
@@ -55,9 +58,9 @@ function JobOpenings_A() {
           <li>Recruiter name: {user.recruiter_name}</li>
           <li>Recruiter email: {user.recruiter_email}</li>
           <li>Posting Date: {user.postingDate}</li>
-          <li>Deadline: {user.deadline}</li>
+          <li>Deadline: {user.date_deadline}</li>
           <li>Job Type: {user.jobType}</li>
-          {/* <li>Skills Needed: {user.skills}</li> */}
+          <li>Skills Needed: {user.skills.map((s) => <span> {s.name} &nbsp;</span>)}</li>
           <li>Duration: {user.duration}</li>
           <li>Salary Offered: {user.salary}</li>
           <li>Maximum Applicants: {user.ma}</li>

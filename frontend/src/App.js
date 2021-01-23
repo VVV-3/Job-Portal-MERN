@@ -37,7 +37,7 @@ function App() {
     <UserContext.Provider value={{ user, setUser }}>
       <Switch>
         <Route exact path="/">
-          <Logout />
+         <Home/>
         </Route>
         <Route path="/login">
           <Login />
