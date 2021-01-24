@@ -73,13 +73,11 @@ function MakeJobOpening_R() {
         }
       )
       .then((res) => {
-        setUser({jobType: null});
-        console.log(res.data);
-        history.push("/");
+        history.push("/jobOpenings_r");
       })
       .catch((error) => {
         console.log(error);
-        //setErr(error);
+        setErr(error);
         setTimeout(() => setErr(false), 3000);
       });
   }
@@ -171,7 +169,13 @@ function MakeJobOpening_R() {
           <Input
             name="salary"
             type="number"
-            innerRef={register({ required: "Required" })}
+            innerRef={register({
+              required: "Enter a salary",
+              pattern: {
+                value: /^\d+$/i,
+                message: "Enter a valid salary",
+              },
+            })}
             invalid={errors.salary}
           />
           <FormFeedback>{errors.salary && errors.salary.message}</FormFeedback>

@@ -42,8 +42,11 @@ router.get('/find', async (req,res) => {
 
 //edit a certain jobOpening
 router.post('/edit/:id', async (req, res) => {
+    console.log(req.body);
+    console.log(req.params);
     try {
-        const job = await JobOpening.findOneAndUpdate(req.params.id, { $set: req.body }, {new: true}).populate('skills').populate('recruiter');
+        const job = await JobOpening.findByIdAndUpdate(req.params.id, { $set: req.body }, {new: true}).populate('skills').populate('recruiter');
+        console.log(job);
         res.status(200).send(job);
     } catch (error) {
         res.status(400).json(error);

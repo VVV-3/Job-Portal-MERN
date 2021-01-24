@@ -4,7 +4,21 @@ import { useHistory, Redirect } from "react-router-dom";
 import { UserContext } from "App";
 import axios from "axios";
 import Navbar_A from "./Navbar";
-import { Container, Table, Alert, Button } from "reactstrap";
+import SortFilterbar from "./SortFilterbar";
+import {
+  Container,
+  Row,
+  Col,
+  Card,
+  CardBody,
+  CardHeader,
+  Button,
+  CardFooter,
+  Alert,
+  FormGroup,
+  Label,
+  Input,
+} from "reactstrap";
 import "../../../App.css";
 
 function JobOpenings_A() {
@@ -12,29 +26,28 @@ function JobOpenings_A() {
   const { user, setUser } = useContext(UserContext);
   const [openings, setOpenings] = useState([]);
   const [err, setErr] = useState(false);
-  const [rating,setRating] = useState(0);
+  const [rating, setRating] = useState(0);
 
   useEffect(() => {
     axios
       .get("/api/jobOpening/find")
       .then((res) => {
-        console.log(res.data)
+        console.log(res.data);
         setOpenings(
-          res.data
-            .map((s) => ({
-              postingDate: s.postingDate,
-              title: s.title,
-              recruiter_name: s.recruiter.name,
-              skills:s.skills,
-              salary:s.salary,
-              jobType:s.jobType,
-              duration:s.duration,
-              date_deadline:s.deadline,
-              rating:s.rating.numerator/(s.rating.denominator||1),
-              state:s.state,
-              mp:s.maxPositions,
-              ma:s.maxApplicants
-            }))
+          res.data.map((s) => ({
+            postingDate: s.postingDate,
+            title: s.title,
+            recruiter_name: s.recruiter.name,
+            skills: s.skills,
+            salary: s.salary,
+            jobType: s.jobType,
+            duration: s.duration,
+            date_deadline: s.deadline,
+            rating: s.rating.numerator / (s.rating.denominator || 1),
+            state: s.state,
+            mp: s.maxPositions,
+            ma: s.maxApplicants,
+          }))
         );
       })
       .catch((err) => {
@@ -43,75 +56,161 @@ function JobOpenings_A() {
         setTimeout(() => setErr(false), 3000);
       });
   }, []);
+
+  const [searchTerm, setSearchTerm] = useState();
+
+  // sort states
+  const [sortOrder, setSortOrder] = useState((o) => o);
+  const [descending, setDescending] = useState(false);
+
+  // filter states
+  const jobTypes = new Set(["part_time", "full_time", "work_from_home"]);
+  const [typeFilter, setTypeFilter] = useState(jobTypes);
+  const [salaryFilter, setSalaryFilter] = useState({
+    from: -Infinity,
+    to: Infinity,
+  });
+  const [durationFilter, setDurationFilter] = useState(7);
+
+  const [filteredList, setFilteredList] = useState([]);
+  // useEffect(() => !jobs.loading && setFilteredList(jobs.data), [
+  //   jobs.data,
+  //   jobs.loading,
+  // ]);
+
+  //searchbar + filter + sort logic
+  useEffect(() => {
+    const sortOrders = {
+      salary: (a, b) => a.salary > b.salary,
+      duration: (a, b) => a.duration > b.duration,
+      rating: (a, b) => a.rating.value > b.rating.value,
+    };
+
+    if (!openings) return [];
+    console.log("filter", openings);
+    if (descending) {
+      setFilteredList(
+        openings
+          // .filter((o) =>
+          // o.title.toLowerCase().includes(searchTerm.toLowerCase())
+          // )
+          .filter((o) => typeFilter.has(o.jobType))
+          .filter(
+            (o) => salaryFilter.from <= o.salary && o.salary <= salaryFilter.to
+          )
+          .filter((o) => o.duration < durationFilter)
+          .sort(sortOrders[sortOrder])
+          .reverse()
+      );
+    } else {
+      setFilteredList(
+        openings
+          // .filter((o) =>
+          //   o.title.toLowerCase().includes(searchTerm.toLowerCase())
+          // )
+          .filter((o) => typeFilter.has(o.jobType))
+          .filter(
+            (o) => salaryFilter.from <= o.salary && o.salary <= salaryFilter.to
+          )
+          .filter((o) => o.duration < durationFilter)
+          .sort(sortOrders[sortOrder])
+      );
+    }
+
+    console.log("object:", filteredList);
+  }, [
+    searchTerm,
+    sortOrder,
+    descending,
+    typeFilter,
+    salaryFilter,
+    durationFilter,
+    openings,
+  ]);
+
   if (user.id === null) return <Redirect to="/" />;
 
   return (
-    <Container >
+    <Container>
       <Navbar_A />
       {err && <Alert color="danger">{err}</Alert>}
+      <br></br>
+      <hr/>
+      <br></br>
+      <SortFilterbar
+        setSearchTerm={setSearchTerm}
+        setSortOrder={setSortOrder}
+        setDescending={setDescending}
+        descending={descending}
+        typeFilter={typeFilter}
+        setTypeFilter={setTypeFilter}
+        salaryFilter={salaryFilter}
+        setSalaryFilter={setSalaryFilter}
+        setDurationFilter={setDurationFilter}
+      />
+      <hr/>
+      <br></br>
+      <Row className="d-flex justify-content-center">
+        {filteredList.reverse().map((user, i) => (
+          <Col md={5}>
+            <Card className="mb-5">
+              <CardHeader>
+                <h3> {user.title}</h3>
+              </CardHeader>
+              <CardBody>
+                <ul key="i">
+                  <li>Recruiter Name: {user.recruiter_name}</li>
+                  <li>Recruiter Email : {user.recruiter_email}</li>
+                  <li>Max Applications : {user.ma}</li>
+                  <li>Max Positions : {user.mp}</li>
+                  <li>DatePosted : {user.postingDate}</li>
+                  <li>Application Deadline : {user.deadline}</li>
+                  <li>
+                    Required Skills :{" "}
+                    {user.skills.map((s) => (
+                      <span> {s.name} &nbsp;</span>
+                    ))}
+                  </li>
+                  <li>Job Type : {user.jobType}</li>
+                  <li>Duration: {user.duration}</li>
+                  <li>Rating: {user.rating}</li>
+                </ul>
+              </CardBody>
+              <CardFooter>
+                <h4>&#x20B9; {user.salary}</h4>
 
-      <h2 >Job Openings</h2>
-      <body className='loginform'>
-      {openings.map((user, ind) => (
-        <ul key={ind} className='loginform2'>
-          <li>Job Title: {user.title}</li>
-          <li>Recruiter name: {user.recruiter_name}</li>
-          <li>Recruiter email: {user.recruiter_email}</li>
-          <li>Posting Date: {user.postingDate}</li>
-          <li>Deadline: {user.date_deadline}</li>
-          <li>Job Type: {user.jobType}</li>
-          <li>Skills Needed: {user.skills.map((s) => <span> {s.name} &nbsp;</span>)}</li>
-          <li>Duration: {user.duration}</li>
-          <li>Salary Offered: {user.salary}</li>
-          <li>Maximum Applicants: {user.ma}</li>
-          <li>Maximum Positions Available: {user.mp}</li>
-          <li>Rating: {user.rating}</li>
-          <Button>Apply</Button>
-
-        </ul>
-      ))}
-      </body>
-
-      {/* <Table size="small" className="loginform">
-        <thead>
-          <tr>
-            
-            <th>Job Title</th>
-            <th>Recruiter Name</th>
-            <th>Recruiter Email</th>
-            <th>Job Type</th>
-            <th>Skills Needed</th>
-            <th>Job Rating</th>
-            <th>Salary</th>
-            <th>Duration</th>
-            <th>Date Posted</th>
-            <th>Deadline</th>
-            <th>State</th>
-            <th>Max Positions</th>
-            <th>Max Applicants</th>
-          </tr>
-        </thead>
-        <tbody>
-          {openings.map((user, ind) => (
-            <tr key={ind}>
-              <td>{user.title}</td>
-              <td>{user.recruiter_name}</td>
-              <td>{user.recruiter_email}</td>
-              <td>{user.jobType}</td>
-              <td>{user.skills}</td>
-              <td>{user.rating}</td>
-              <td>{user.salary}</td>
-              <td>{user.duration}</td>
-              <td>{user.postingDate}</td>
-              <td>{user.date_deadline}</td>
-              <td>{user.state}</td>
-              <td>{user.mp}</td>
-              <td>{user.ma}</td>
-              <Button>Apply</Button>
-            </tr>
-          ))}
-        </tbody>
-      </Table> */}
+                <div className="d-flex justify-content-end">
+                  <Button color="success">Apply</Button>
+                </div>
+              </CardFooter>
+            </Card>
+          </Col>
+        ))}
+      </Row>
+      {/* <div className="loginform">
+        {filteredList.map((user, ind) => (
+          <ul key={ind} className="loginform2">
+            <li>Job Title: {user.title}</li>
+            <li>Recruiter name: {user.recruiter_name}</li>
+            <li>Recruiter email: {user.recruiter_email}</li>
+            <li>Posting Date: {user.postingDate}</li>
+            <li>Deadline: {user.date_deadline}</li>
+            <li>Job Type: {user.jobType}</li>
+            <li>
+              Skills Needed:{" "}
+              {user.skills.map((s) => (
+                <span> {s.name} &nbsp;</span>
+              ))}
+            </li>
+            <li>Duration: {user.duration}</li>
+            <li>Salary Offered: {user.salary}</li>
+            <li>Maximum Applicants: {user.ma}</li>
+            <li>Maximum Positions Available: {user.mp}</li>
+            <li>Rating: {user.rating}</li>
+            <Button>Apply</Button>
+          </ul>
+        ))}
+      </div> */}
     </Container>
   );
 }

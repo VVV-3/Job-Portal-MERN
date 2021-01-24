@@ -33,11 +33,11 @@ function Login() {
         setUser({
           id: res.data.profile_id,
           user_id: res.data.id,
-          jobType: data.jobType,
+          jobType: res.data.jobType,
         });
         localStorage.setItem("id", res.data.profile_id);
         localStorage.setItem("user_id", res.data.id);
-        localStorage.setItem("jobType", data.jobType);
+        localStorage.setItem("jobType", res.data.jobType);
       })
       .catch((err) => {
         console.log(err);
