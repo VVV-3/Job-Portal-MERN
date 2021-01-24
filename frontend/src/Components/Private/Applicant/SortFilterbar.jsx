@@ -45,7 +45,7 @@ const SortFilterSidebar = ({
   return (
     <Container>
       <Row>
-        <Col class="col-md-4 col-sm-6">
+        <Col class="col-md-4 col-sm-6 d-flex flex-fill flex-column">
           <Card className="p-2">
             <CardBody className="pb-0">
               <div className="d-flex align-items-center justify-content-between">
@@ -117,13 +117,14 @@ const SortFilterSidebar = ({
             </CardBody>
           </Card>
           <br></br>
-          <Card className="p-2">
-            <CardBody className="pb-0"></CardBody>
+          <Card className="p-2 d-flex flex-fill">
+            <CardBody className="pb-0 d-flex flex-fill">
             <div className="fw-700 d-flex align-items-center">
               <img src="/filter.svg" alt="" className="mr-2" />
               Fuzzy Search
             </div>
-            <Input type="text" className="mild-border w-50 mr-2" placeholder="Search Term" onChange={(e) => editSearchTerm(e.target.value)}></Input>
+            <Input type="text" className="w-50 mr-2" placeholder="Search Term" onChange={(e) => editSearchTerm(e.target.value)}></Input>
+            </CardBody>
           </Card>
         </Col>
         <Col class="col-md-8 col-sm-8">

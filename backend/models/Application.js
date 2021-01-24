@@ -6,7 +6,7 @@ const ApplicationSchema = new Schema({
     jobOpening: {
         type: Schema.Types.ObjectId,
         required: true,
-        ref: 'Jobopenings'
+        ref: 'JobOpenings'
     },
     applicant: {
         type: Schema.Types.ObjectId,
@@ -21,11 +21,19 @@ const ApplicationSchema = new Schema({
             message: "Word limit exceeded!",
         }
     },
+    doj: {
+        type:Date,
+        default: null
+    },
+    doa: {
+        type: Date,
+        default : Date.now
+    },
     state: {
         type: String,
         required: true,
         trim: true,
-        enum: ["applied", "rejected", "shortlisted", "accepted"],
+        enum: ["applied", "rejected", "shortlisted", "accepted","selected"],
         default: "applied",
     }
 });

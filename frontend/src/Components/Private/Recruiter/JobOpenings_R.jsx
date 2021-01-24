@@ -60,7 +60,7 @@ function JobOpenings_R() {
         <h3>Your Job Openings</h3>
       </div>
       <Row className="d-flex justify-content-center">
-        {openings.map((job, i) => (
+        {openings.reverse().map((job, i) => (
           <Col md={5}>
             <Card className="mb-5">
               <CardHeader>

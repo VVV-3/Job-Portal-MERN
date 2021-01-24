@@ -5,6 +5,7 @@ import { UserContext } from "App";
 import axios from "axios";
 import Navbar_A from "./Navbar";
 import SortFilterbar from "./SortFilterbar";
+import ApplyJobOpening from "./ApplyJobOpening_A";
 import {
   Container,
   Row,
@@ -34,20 +35,24 @@ function JobOpenings_A() {
       .then((res) => {
         console.log(res.data);
         setOpenings(
-          res.data.map((s) => ({
-            postingDate: s.postingDate,
-            title: s.title,
-            recruiter_name: s.recruiter.name,
-            skills: s.skills,
-            salary: s.salary,
-            jobType: s.jobType,
-            duration: s.duration,
-            date_deadline: s.deadline,
-            rating: s.rating.numerator / (s.rating.denominator || 1),
-            state: s.state,
-            mp: s.maxPositions,
-            ma: s.maxApplicants,
-          }))
+          res.data
+            .filter((d) => d.state !== "closed")
+            .map((s) => ({
+              jobId: s._id,
+              postingDate: s.postingDate,
+              title: s.title,
+              recruiter_name: s.recruiter.name,
+              recruiter_email: s.recruiter.email,
+              skills: s.skills,
+              salary: s.salary,
+              jobType: s.jobType,
+              duration: s.duration,
+              deadline: s.deadline,
+              rating: s.rating.numerator / (s.rating.denominator || 1),
+              state: s.state,
+              mp: s.maxPositions,
+              ma: s.maxApplicants,
+            }))
         );
       })
       .catch((err) => {
@@ -57,10 +62,10 @@ function JobOpenings_A() {
       });
   }, []);
 
-  const [searchTerm, setSearchTerm] = useState();
+  const [searchTerm, setSearchTerm] = useState("");
 
   // sort states
-  const [sortOrder, setSortOrder] = useState((o) => o);
+  const [sortOrder, setSortOrder] = useState('default');
   const [descending, setDescending] = useState(false);
 
   // filter states
@@ -84,16 +89,17 @@ function JobOpenings_A() {
       salary: (a, b) => a.salary > b.salary,
       duration: (a, b) => a.duration > b.duration,
       rating: (a, b) => a.rating.value > b.rating.value,
+      default: (o) => o,
     };
 
     if (!openings) return [];
-    console.log("filter", openings);
+
     if (descending) {
       setFilteredList(
         openings
-          // .filter((o) =>
-          // o.title.toLowerCase().includes(searchTerm.toLowerCase())
-          // )
+          .filter((o) =>
+            o.title.toLowerCase().includes(searchTerm.toLowerCase())
+          )
           .filter((o) => typeFilter.has(o.jobType))
           .filter(
             (o) => salaryFilter.from <= o.salary && o.salary <= salaryFilter.to
@@ -105,9 +111,9 @@ function JobOpenings_A() {
     } else {
       setFilteredList(
         openings
-          // .filter((o) =>
-          //   o.title.toLowerCase().includes(searchTerm.toLowerCase())
-          // )
+          .filter((o) =>
+            o.title.toLowerCase().includes(searchTerm.toLowerCase())
+          )
           .filter((o) => typeFilter.has(o.jobType))
           .filter(
             (o) => salaryFilter.from <= o.salary && o.salary <= salaryFilter.to
@@ -135,7 +141,7 @@ function JobOpenings_A() {
       <Navbar_A />
       {err && <Alert color="danger">{err}</Alert>}
       <br></br>
-      <hr/>
+      <hr />
       <br></br>
       <SortFilterbar
         setSearchTerm={setSearchTerm}
@@ -148,39 +154,43 @@ function JobOpenings_A() {
         setSalaryFilter={setSalaryFilter}
         setDurationFilter={setDurationFilter}
       />
-      <hr/>
+      <hr />
       <br></br>
       <Row className="d-flex justify-content-center">
-        {filteredList.reverse().map((user, i) => (
+        {filteredList.reverse().map((job, i) => (
           <Col md={5}>
             <Card className="mb-5">
               <CardHeader>
-                <h3> {user.title}</h3>
+                <h3> {job.title}</h3>
               </CardHeader>
               <CardBody>
                 <ul key="i">
-                  <li>Recruiter Name: {user.recruiter_name}</li>
-                  <li>Recruiter Email : {user.recruiter_email}</li>
-                  <li>Max Applications : {user.ma}</li>
-                  <li>Max Positions : {user.mp}</li>
-                  <li>DatePosted : {user.postingDate}</li>
-                  <li>Application Deadline : {user.deadline}</li>
+                  <li>Recruiter Name: {job.recruiter_name}</li>
+                  <li>Recruiter Email : {job.recruiter_email}</li>
+                  <li>Max Applications : {job.ma}</li>
+                  <li>Max Positions : {job.mp}</li>
+                  <li>DatePosted : {job.postingDate}</li>
+                  <li>Application Deadline : {job.deadline}</li>
                   <li>
                     Required Skills :{" "}
-                    {user.skills.map((s) => (
+                    {job.skills.map((s) => (
                       <span> {s.name} &nbsp;</span>
                     ))}
                   </li>
-                  <li>Job Type : {user.jobType}</li>
-                  <li>Duration: {user.duration}</li>
-                  <li>Rating: {user.rating}</li>
+                  <li>Job Type : {job.jobType}</li>
+                  <li>Duration: {job.duration}</li>
+                  <li>Rating: {job.rating}</li>
                 </ul>
               </CardBody>
               <CardFooter>
-                <h4>&#x20B9; {user.salary}</h4>
+                <h4>&#x20B9; {job.salary}</h4>
 
                 <div className="d-flex justify-content-end">
-                  <Button color="success">Apply</Button>
+                  <ApplyJobOpening
+                    jobId={job.jobId}
+                    applicantId={user.id}
+                    jobState={job.state}
+                  />
                 </div>
               </CardFooter>
             </Card>
@@ -188,7 +198,7 @@ function JobOpenings_A() {
         ))}
       </Row>
       {/* <div className="loginform">
-        {filteredList.map((user, ind) => (
+        {filteredList.map((job, ind) => (
           <ul key={ind} className="loginform2">
             <li>Job Title: {user.title}</li>
             <li>Recruiter name: {user.recruiter_name}</li>

@@ -24,10 +24,13 @@ router.post('/add/:applicantId/:jobId', async (req,res) => {
 });
 
 //find applications
-router.get('/find/', async (req,res) => {
+router.get('/find', async (req,res) => {
+    
     try {
         const applications = await Application.find(req.query).populate('jobOpening').populate('applicant');
+        console.log(applications);
         res.status(200).json(applications);
+       
     } catch (error) {
         res.status(400).send(error);
     };
