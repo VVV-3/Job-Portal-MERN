@@ -49,7 +49,7 @@ function DeleteJobOpening_R({ jobId, jobState, jobDeadline}) {
 //     }
 //   }, []);
     console.log(jobState)
-    if(jobState === 'open') {
+    if(jobState !== 'closed') {
         function deljo() {
             console.log("hoho");
             axios
@@ -75,7 +75,7 @@ function DeleteJobOpening_R({ jobId, jobState, jobDeadline}) {
           return <Button color='danger' onClick={() => deljo()}>Delete</Button>;
     }
     if(jobState === 'filled') return <Alert color='dark'>Filled</Alert>;
-  return <Alert color='dark'>Job Closed</Alert>
+  return <Button color='warning'>Job Closed</Button>
 }
 
 export default DeleteJobOpening_R;

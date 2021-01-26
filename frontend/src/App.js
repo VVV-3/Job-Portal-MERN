@@ -16,6 +16,7 @@ import Applications_A from "./Components/Private/Applicant/Applications_A";
 import Profile_R from "./Components/Private/Recruiter/Profile_R";
 import Jobopenings_R from "./Components/Private/Recruiter/JobOpenings_R";
 import MakeJobOpenings_R from "./Components/Private/Recruiter/MakeJobOpening_R";
+import Applications_R from "./Components/Private/Recruiter/Applications_R";
 
 import Logout from "Components/Public/Logout";
 
@@ -51,6 +52,7 @@ function App() {
         <Route path="/register_r">
           <Register_R />
         </Route>
+
         <Route path="/profile_a">
           <Profile_A />
         </Route>
@@ -60,6 +62,7 @@ function App() {
         <Route path="/applications_a">
           <Applications_A />
         </Route>
+
         <Route path="/profile_r">
           <Profile_R />
         </Route>
@@ -69,6 +72,10 @@ function App() {
         <Route path="/makeJobOpenings_r">
           <MakeJobOpenings_R />
         </Route>
+        <Route path="/applications_r">
+          <Applications_R />
+        </Route>
+
         <Redirect to="/" />
       </Switch>
     </UserContext.Provider>

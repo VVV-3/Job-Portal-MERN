@@ -121,7 +121,7 @@ const SortFilterSidebar = ({
             <CardBody className="pb-0 d-flex flex-fill">
             <div className="fw-700 d-flex align-items-center">
               <img src="/filter.svg" alt="" className="mr-2" />
-              Fuzzy Search
+              Search
             </div>
             <Input type="text" className="w-50 mr-2" placeholder="Search Term" onChange={(e) => editSearchTerm(e.target.value)}></Input>
             </CardBody>

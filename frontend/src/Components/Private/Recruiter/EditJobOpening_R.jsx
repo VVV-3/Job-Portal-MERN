@@ -26,7 +26,7 @@ import {
   ModalFooter,
 } from "reactstrap";
 
-const ModalExample = ({ jobId, jobState, jobDeadline }) => {
+const ModalExample = ({ jobId, jobState, ma, mp, jobDeadline }) => {
   const [modal, setModal] = useState(false);
   const toggle = () => setModal(!modal);
   const history = useHistory();
@@ -36,12 +36,9 @@ const ModalExample = ({ jobId, jobState, jobDeadline }) => {
   function onSub(data) {
     console.log(data);
     axios
-      .post(
-        `/api/jobOpening/edit/${jobId}`,data,
-        {
-          headers: { "Content-Type": "application/json" },
-        }
-      )
+      .post(`/api/jobOpening/edit/${jobId}`, data, {
+        headers: { "Content-Type": "application/json" },
+      })
       .then((res) => {
         console.log("success!!");
         history.push("/");
@@ -52,7 +49,7 @@ const ModalExample = ({ jobId, jobState, jobDeadline }) => {
         setTimeout(() => setErr(false), 3000);
       });
   }
-  if (jobState === "open") {
+  if (jobState !== "closed") {
     return (
       <div>
         <Button color="primary" onClick={toggle}>
@@ -67,6 +64,7 @@ const ModalExample = ({ jobId, jobState, jobDeadline }) => {
                 <Input
                   name="maxApplicants"
                   type="number"
+                  defaultValue = {ma}
                   innerRef={register()}
                   invalid={errors.maxApplicants}
                 />
@@ -79,6 +77,7 @@ const ModalExample = ({ jobId, jobState, jobDeadline }) => {
                 <Input
                   name="maxPositions"
                   type="number"
+                  defaultValue={mp}
                   innerRef={register()}
                   invalid={errors.maxPositions}
                 />

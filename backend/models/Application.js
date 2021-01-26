@@ -16,13 +16,14 @@ const ApplicationSchema = new Schema({
     sop: {
         type: String,
         required: true,
+        trim: true,
         validate: {
             validator: (msg) => msg.split(" ").length <= 250,
             message: "Word limit exceeded!",
         }
     },
     doj: {
-        type:Date,
+        type: Date,
         default: null
     },
     doa: {
@@ -33,8 +34,16 @@ const ApplicationSchema = new Schema({
         type: String,
         required: true,
         trim: true,
-        enum: ["applied", "rejected", "shortlisted", "accepted","selected"],
+        enum: ["applied", "rejected", "shortlisted","selected"],
         default: "applied",
+    },
+    arate: {
+        type: Boolean,
+        default: false
+    },
+    jrate: {
+        type:Boolean,
+        default: false
     }
 });
 

@@ -2,7 +2,6 @@ import { useState, useContext, useEffect } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { useHistory, Redirect } from "react-router-dom";
 import CreatableSelect from "react-select/creatable";
-import Education from "./Education";
 import "../../App.css";
 import axios from "axios";
 import {
@@ -18,12 +17,43 @@ import {
 } from "reactstrap";
 import { UserContext } from "App";
 
+
+
 function Register_A() {
   const { user, setUser } = useContext(UserContext);
   const history = useHistory();
   const { register, handleSubmit, errors, control } = useForm();
   const [err, setErr] = useState(false);
   const [skills, setSkills] = useState([]);
+  const [eduList, setEdu] = useState([Education]);
+  const addEdu = () => setEdu([...eduList, Education]);
+
+  function Education(x) {
+    return (
+      <FormGroup>
+        <Label for="education">Enter Education - {x.id + 1} Details</Label>
+        <Input
+          type="text"
+          name={`e-${x.id}-name`}
+          innerRef={register()}
+          placeholder="Institution"
+          className="p-3 my-3"
+        />
+        <Input
+          type="number"
+          name={`e-${x.id}-startYear`}
+          innerRef={register()}
+          placeholder="Start Year"
+        />
+        <Input
+          type="number"
+          name={`e-${x.id}-endYear`}
+          innerRef={register()}
+          placeholder="EndYear"
+        />
+      </FormGroup>
+    );
+  }
 
   useEffect(() => {
     axios
@@ -38,7 +68,15 @@ function Register_A() {
   }, []);
 
   function onSub(data) {
-    console.log(data, user);
+    // var eduDb=[];
+            // for(var i=0;i<data.length;i++)
+            // {
+            //     eduDb[i]={
+            //         data.`e-${i}-name`0
+            //     }
+            // }
+            // console.log(eduDb);
+    console.log(data);
 
     const newSkills = data.skills.filter((d) => d.__isNew__);
     var saveSkills = data.skills
@@ -75,7 +113,7 @@ function Register_A() {
         }
       )
       .then((res) => {
-        setUser({jobType: null});
+        setUser({ jobType: null });
         console.log(res.data);
         history.push("/login");
       })
@@ -85,11 +123,10 @@ function Register_A() {
       });
   }
 
-  //if (user.id !== null) return <Redirect to="/" />;
+  if (user.id !== null) return <Redirect to="/" />;
   return (
-    <Container className='loginform'>
-      Register - 2 of 2
-      <br></br>
+    <Container className="loginform">
+      Register - 2 of 2<br></br>
       <br></br>
       {err && <Alert color="danger">{err}</Alert>}
       <Form onSubmit={handleSubmit(onSub)}>
@@ -114,6 +151,10 @@ function Register_A() {
           />
           <FormFeedback>{errors.skills && errors.skills.message}</FormFeedback>
         </FormGroup>
+        <Button onClick={addEdu}>addEdu</Button>
+            {eduList.map((E, i) => (
+                <E id={i} />
+            ))}
         <Button>Submit</Button>
       </Form>
     </Container>

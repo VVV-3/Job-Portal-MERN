@@ -86,9 +86,9 @@ function JobOpenings_A() {
   //searchbar + filter + sort logic
   useEffect(() => {
     const sortOrders = {
-      salary: (a, b) => a.salary > b.salary,
-      duration: (a, b) => a.duration > b.duration,
-      rating: (a, b) => a.rating.value > b.rating.value,
+      salary: (a, b) => a.salary - b.salary,
+      duration: (a, b) => a.duration - b.duration,
+      rating: (a, b) => a.rating.value - b.rating.value,
       default: (o) => o,
     };
 
@@ -190,6 +190,7 @@ function JobOpenings_A() {
                     jobId={job.jobId}
                     applicantId={user.id}
                     jobState={job.state}
+                    jobMaxApplicants={job.ma}
                   />
                 </div>
               </CardFooter>

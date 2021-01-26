@@ -27,19 +27,21 @@ router.post('/add/:applicantId/:jobId', async (req,res) => {
 router.get('/find', async (req,res) => {
     
     try {
-        const applications = await Application.find(req.query).populate('jobOpening').populate('applicant');
-        console.log(applications);
+        const applications = await Application.find(req.query).populate('jobOpening')
+        .populate({ path:"jobOpening", populate: {path:"recruiter"}})
+        .populate('applicant')
+        .populate({ path:"applicant", populate: {path:"skills"}});
         res.status(200).json(applications);
        
     } catch (error) {
-        res.status(400).send(error);
+        res.status(400).json(error);
     };
 });
 
 //edit applications
 router.post('/edit/:id', async (req,res) => {
     try {
-        const application = await Application.findByIdAndUpdate(req.params.id , { $set: req.body }, {new: true}).populate('jobOpening').populate.apply('applicant');
+        const application = await Application.findByIdAndUpdate(req.params.id , { $set: req.body }, {new: true}).populate('jobOpening').populate('applicant');
         res.status(200).json(application);
     } catch (error) {
         res.status(400).json(error);

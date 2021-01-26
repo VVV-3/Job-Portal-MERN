@@ -7,6 +7,7 @@ import axios from "axios";
 import Navbar_R from "./Navbar";
 import DeleteJobOpening_R from "./DeleteJobOpening_R";
 import EditJobOpening_R from "./EditJobOpening_R";
+import JobDetails from "./JobDetails";
 import {
   Container,
   Row,
@@ -22,12 +23,20 @@ import {
   Input,
 } from "reactstrap";
 
+
+
 function JobOpenings_R() {
   const history = useHistory();
   const { user, setUser } = useContext(UserContext);
   const [openings, setOpenings] = useState([]);
   const [err, setErr] = useState(false);
   const [rating, setRating] = useState(0);
+
+  function viewjob(data) {
+    localStorage.setItem("jobOpeningId", data);
+    history.push("/applications_r");
+   
+  }
 
   useEffect(() => {
     axios
@@ -67,11 +76,13 @@ function JobOpenings_R() {
                 <h3> {job.title}</h3>
               </CardHeader>
               <CardBody>
-                <ul key="i">
-                  <li>Current Applications : {job.maxApplicants}</li>
-                  <li>Remaining Positions : {job.maxPositions}</li>
-                  <li>DatePosted : {job.postingDate}</li>
-                </ul>
+                <JobDetails
+                  jobId={job._id}
+                  jobState={job.state}
+                  ma={job.maxApplicants}
+                  mp={job.maxPositions}
+                  jobPostingDate={job.postingDate}
+                />
               </CardBody>
               <CardFooter>
                 <div
@@ -86,11 +97,19 @@ function JobOpenings_R() {
                   <EditJobOpening_R
                     jobId={job._id}
                     jobState={job.state}
+                    ma={job.maxApplicants}
+                    mp={job.maxPositions}
                     jobDeadline={job.deadline}
                   />
-                  <Button color="success">See Applications</Button>
-                </div>
-                <div className="justify-content-end"></div>
+                
+                  <Button
+                    type="button"
+                    color="success"
+                    onClick={() => viewjob(job._id)}
+                  >
+                    View Applicants
+                  </Button>
+                  </div>
               </CardFooter>
             </Card>
           </Col>
