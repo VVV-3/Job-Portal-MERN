@@ -114,7 +114,7 @@ function SubmitProcess({ jId, apId, aId, aState, mp, mp1 }) {
             }
           )
           .then((res) => {
-            console.log(x,"is rejected");
+            console.log(res,"is rejected");
           });
     
           console.log(delApplications[x].id);
@@ -131,7 +131,7 @@ function SubmitProcess({ jId, apId, aId, aState, mp, mp1 }) {
         }
       )
       .then((res) => {
-        console.log(x,"is rejected");
+        console.log(res,"is rejected !!");
       });
 
       console.log(delApps[x].id);
