@@ -19,6 +19,7 @@ import { UserContext } from "App";
 function Register_R() {
   const { user, setUser } = useContext(UserContext);
   const history = useHistory();
+  const userEmail = localStorage.getItem("userEmail");
   const { register, handleSubmit, errors } = useForm();
   const [err, setErr] = useState(false);
 
@@ -28,7 +29,7 @@ function Register_R() {
       .post(
         "/api/register/recruiter",
         {
-          email: user.email,
+          email: userEmail,
           ...data,
         },
         {
@@ -45,7 +46,7 @@ function Register_R() {
         setTimeout(() => setErr(false), 3000);
       });
   }
-  //if (user.id !== null) return <Redirect to="/" />;
+  if (user.id !== null) return <Redirect to="/" />;
   return (
     <Container className='loginform'>
       Register - 2 of 2

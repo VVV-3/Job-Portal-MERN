@@ -23,19 +23,17 @@ import {
   Input,
 } from "reactstrap";
 
-
-
 function JobOpenings_R() {
   const history = useHistory();
   const { user, setUser } = useContext(UserContext);
   const [openings, setOpenings] = useState([]);
   const [err, setErr] = useState(false);
   const [rating, setRating] = useState(0);
+  const [resdata, setresdata] = useState([]);
 
   function viewjob(data) {
     localStorage.setItem("jobOpeningId", data);
     history.push("/applications_r");
-   
   }
 
   useEffect(() => {
@@ -58,6 +56,18 @@ function JobOpenings_R() {
         console.log(err);
         setTimeout(() => setErr(false), 3000);
       });
+
+    axios
+      .get("/api/application/find")
+      .then((res) => {
+        console.log("got all applications - success!!");
+        setresdata(res.data);
+      })
+      .catch((error) => {
+        console.log(error);
+        setErr(error);
+        setTimeout(() => setErr(false), 3000);
+      });
   }, []);
   if (user.id === null) return <Redirect to="/" />;
 
@@ -65,13 +75,14 @@ function JobOpenings_R() {
     <Container>
       <Navbar_R />
       {err && <Alert color="danger">{err}</Alert>}
-      <div className="justify-content-center">
+      <div className="d-flex justify-content-center">
+        <br></br>
         <h3>Your Job Openings</h3>
       </div>
       <Row className="d-flex justify-content-center">
         {openings.reverse().map((job, i) => (
           <Col md={5}>
-            <Card className="mb-5">
+            <Card className="mb-5 loginform3">
               <CardHeader>
                 <h3> {job.title}</h3>
               </CardHeader>
@@ -82,6 +93,7 @@ function JobOpenings_R() {
                   ma={job.maxApplicants}
                   mp={job.maxPositions}
                   jobPostingDate={job.postingDate}
+                  resdata={resdata}
                 />
               </CardBody>
               <CardFooter>
@@ -100,8 +112,9 @@ function JobOpenings_R() {
                     ma={job.maxApplicants}
                     mp={job.maxPositions}
                     jobDeadline={job.deadline}
+                    resdata = {resdata}
                   />
-                
+
                   <Button
                     type="button"
                     color="success"
@@ -109,7 +122,7 @@ function JobOpenings_R() {
                   >
                     View Applicants
                   </Button>
-                  </div>
+                </div>
               </CardFooter>
             </Card>
           </Col>

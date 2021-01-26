@@ -28,6 +28,7 @@ function JobOpenings_A() {
   const [openings, setOpenings] = useState([]);
   const [err, setErr] = useState(false);
   const [rating, setRating] = useState(0);
+  const Selected = localStorage.getItem("Selected");
 
   useEffect(() => {
     axios
@@ -92,7 +93,7 @@ function JobOpenings_A() {
       default: (o) => o,
     };
 
-    if (!openings) return [];
+    if (!openings) setFilteredList([]);
 
     if (descending) {
       setFilteredList(
@@ -136,6 +137,19 @@ function JobOpenings_A() {
 
   if (user.id === null) return <Redirect to="/" />;
 
+  if( Selected === 'true') {return (
+    <Container>
+      <Navbar_A />
+      {err && <Alert color="danger">{err}</Alert>}
+      <br></br>
+      <hr />
+      <br></br>
+      <Alert color='success'>You have been selected for a job!!</Alert>
+      <hr />
+      <br></br>
+    </Container>
+  )}
+
   return (
     <Container>
       <Navbar_A />
@@ -156,10 +170,13 @@ function JobOpenings_A() {
       />
       <hr />
       <br></br>
+      <div className="d-flex justify-content-center">
+        <h3>Active Job Openings</h3>
+      </div>
       <Row className="d-flex justify-content-center">
         {filteredList.reverse().map((job, i) => (
           <Col md={5}>
-            <Card className="mb-5">
+            <Card className="mb-5 loginform3">
               <CardHeader>
                 <h3> {job.title}</h3>
               </CardHeader>

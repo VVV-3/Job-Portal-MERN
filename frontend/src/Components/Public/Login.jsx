@@ -29,7 +29,7 @@ function Login() {
         headers: { "Content-Type": "application/json" },
       })
       .then((res) => {
-        console.log(data);
+        console.log(res.data);
         setUser({
           id: res.data.profile_id,
           user_id: res.data.id,
@@ -38,6 +38,10 @@ function Login() {
         localStorage.setItem("id", res.data.profile_id);
         localStorage.setItem("user_id", res.data.id);
         localStorage.setItem("jobType", res.data.jobType);
+        if (res.data.jobType === "applicant")
+          return <Redirect to="/applications_a" />;
+        if (res.data.jobType === "recruiter")
+          return <Redirect to="jobOpening_r" />;
       })
       .catch((err) => {
         console.log(err);
@@ -45,7 +49,10 @@ function Login() {
         setTimeout(() => setErr(false), 3000);
       });
   }
-  if (user.id !== null) return <Redirect to="/" />;
+  if (user.id && user.jobType === "applicant")
+    return <Redirect to="/applications_a" />;
+  if (user.id && user.jobType === "recruiter")
+    return <Redirect to="/jobOpenings_r" />;
 
   return (
     <Container className="loginform">
@@ -91,7 +98,7 @@ function Login() {
         </FormGroup>
         <Button>Login</Button>
         <FormGroup>
-        <br></br>
+          <br></br>
           <Label for="register">New Here? Make an account</Label>
           <br></br>
           <Link to="/register">

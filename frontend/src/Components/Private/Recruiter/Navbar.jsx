@@ -28,10 +28,13 @@ const Navbar_R = (props) => {
         <Collapse isOpen={isOpen} navbar>
           <Nav className="ml-auto" navbar>
             <NavItem>
-              <NavLink href="/jobOpenings_r">JobOpenings</NavLink>
+              <NavLink href="/jobOpenings_r">My Job Openings</NavLink>
             </NavItem>
             <NavItem>
-              <NavLink href="/makeJobOpenings_r">Make JobOpenings</NavLink>
+              <NavLink href="/makeJobOpenings_r">Make a JobOpenings</NavLink>
+            </NavItem>
+            <NavItem>
+              <NavLink href="/selectedApplicants_r">My Selected Applicants</NavLink>
             </NavItem>
             <UncontrolledDropdown nav inNavbar>
               <DropdownToggle nav caret>

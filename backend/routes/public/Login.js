@@ -9,12 +9,14 @@ const Recruiter = require('../../models/Recruiter');
 const {loginValidation} = require('../../auth/DetailsValidation');
 
 router.post('/', async (req,res) => {
+    console.log(req.body);
     //Validation
     const {error} = loginValidation(req.body);
     if (error) return res.status(400).send(error.details[0].message);
 
     //Checking if user dosent exist
     const user = await User.findOne({email: req.body.email});
+    console.log(user);
     if (!user) return res.status(400).send('User does not exist exist in DB, please register');
 
     //Checking password

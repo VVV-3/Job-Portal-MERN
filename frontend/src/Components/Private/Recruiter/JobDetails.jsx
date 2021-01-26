@@ -20,43 +20,53 @@ import {
   Input,
 } from "reactstrap";
 
-function DeleteJobOpening_R({ jobId, jobState, jobPostingDate, ma, mp }) {
+function DeleteJobOpening_R({ jobId, jobState, jobPostingDate, ma, mp, resdata}) {
   const history = useHistory();
   const [err, setErr] = useState(false);
   const [ma1, setma1] = useState(null);
   const [mp1, setmp1] = useState(null);
 
   useEffect(() => {
-    axios
-      .get("/api/application/find")
-      .then((res) => {
-        console.log("success!!");
-        setma1(res.data.filter((o) => o.jobOpening._id === jobId).length);
-        setmp1(
-          res.data.filter(
-            (o) => o.jobOpening._id === jobId && o.state === "selected"
-          ).length
-        );
-      })
-      .catch((error) => {
-        console.log(error);
-        setErr(error);
-        setTimeout(() => setErr(false), 3000);
-      });
-  }, []);
+    // axios
+    //   .get("/api/application/find")
+    //   .then((res) => {
+    //     console.log("success!!");
+    //     setma1(res.data.filter((o) => o.jobOpening._id === jobId).length);
+    //     setmp1(
+    //       res.data.filter(
+    //         (o) => o.jobOpening._id === jobId && o.state === "selected"
+    //       ).length
+    //     );
+    //   })
+    //   .catch((error) => {
+    //     console.log(error);
+    //     setErr(error);
+    //     setTimeout(() => setErr(false), 3000);
+    //   });
+    setma1(resdata.filter((o) => o.jobOpening._id === jobId).length);
+    setmp1(
+      resdata.filter(
+        (o) => o.jobOpening._id === jobId && o.state === "selected"
+      ).length
+    );
+  }, [resdata]);
   console.log(jobState);
   if (jobState !== "closed") {
     return (
       <ul>
-        <li>Current Applications : {ma1} / {ma}</li>
-        <li>Remaining Positions : {mp - mp1} / {mp}</li>
+        <li>
+          Current Applications : {ma1} / {ma}
+        </li>
+        <li>
+          Remaining Positions : {mp - mp1} / {mp}
+        </li>
         <li>DatePosted : {jobPostingDate}</li>
       </ul>
     );
   }
   return (
     <ul>
-        <li>DatePosted : {jobPostingDate}</li>
+      <li>DatePosted : {jobPostingDate}</li>
     </ul>
   );
 }

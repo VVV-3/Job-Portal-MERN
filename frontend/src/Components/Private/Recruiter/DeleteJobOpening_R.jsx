@@ -20,34 +20,36 @@ import {
   Input,
 } from "reactstrap";
 
-function DeleteJobOpening_R({ jobId, jobState, jobDeadline}) {
+function DeleteJobOpening_R({ jobId, jobState, jobDeadline }) {
   const history = useHistory();
   const [err, setErr] = useState(false);
   const [skills, setSkills] = useState([]);
+  var dat = new Date()
 
-//   useEffect(() => {
-//     if (date.now > deadlineDate) {
-//       axios
-//         .post(
-//           `/api/jobOpening/edit/${jobId}`,
-//           {
-//             state: "closed",
-//           },
-//           {
-//             headers: { "Content-Type": "application/json" },
-//           }
-//         )
-//         .then((res) => {
-//           console.log("success!!");
-//           history.push("/jobOpenings_r");
-//         })
-//         .catch((error) => {
-//           console.log(error);
-//           setErr(error);
-//           setTimeout(() => setErr(false), 3000);
-//         });
-//     }
-//   }, []);
+  useEffect(() => {
+    if (dat.toISOString > jobDeadline) {
+      console.log('deadline crossed');
+      // axios
+      //   .post(
+      //     `/api/jobOpening/edit/${jobId}`,
+      //     {
+      //       state: "closed",
+      //     },
+      //     {
+      //       headers: { "Content-Type": "application/json" },
+      //     }
+      //   )
+      //   .then((res) => {
+      //     console.log("success!!");
+      //     history.push("/jobOpenings_r");
+      //   })
+      //   .catch((error) => {
+      //     console.log(error);
+      //     setErr(error);
+      //     setTimeout(() => setErr(false), 3000);
+      //   });
+    }
+  }, [jobId]);
     console.log(jobState)
     if(jobState !== 'closed') {
         function deljo() {

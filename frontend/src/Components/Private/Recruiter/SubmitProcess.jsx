@@ -21,9 +21,17 @@ import {
 } from "reactstrap";
 import "../../../App.css";
 
+
 function SubmitProcess({ jId, apId, aId, aState, mp, mp1 }) {
+
+
   const [delApplications, setDelApplications] = useState([]);
   const [delApps, setDelApps] = useState([]);
+  var Dat = new Date();
+
+  function refreshPage() {
+    window.location.reload(false);
+  }
 
   useEffect(() => {
     axios.get("/api/application/find").then((res) => {
@@ -63,7 +71,7 @@ function SubmitProcess({ jId, apId, aId, aState, mp, mp1 }) {
           .map((s) => ({ id: s._id }))
       );
     });
-  }, []);
+  }, [jId]);
 
   function shortlist(id) {
     axios
@@ -78,7 +86,7 @@ function SubmitProcess({ jId, apId, aId, aState, mp, mp1 }) {
         console.log("shortlisted");
       });
     console.log(id);
-    //refreshPage();
+    refreshPage();
   }
 
   function selected(id) {
@@ -132,7 +140,7 @@ function SubmitProcess({ jId, apId, aId, aState, mp, mp1 }) {
     axios
       .post(
         `/api/application/edit/${aId}`,
-        { state: "selected", doj: Date.now },
+        { state: "selected", doj: Dat.toISOString() },
         {
           headers: { "Content-Type": "application/json" },
         }
@@ -141,7 +149,7 @@ function SubmitProcess({ jId, apId, aId, aState, mp, mp1 }) {
         console.log("selected");
       });
     console.log(aId);
-    //refreshPage();
+    refreshPage();
   }
 
   if (aState === "applied") {

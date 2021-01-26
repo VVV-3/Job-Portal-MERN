@@ -60,6 +60,7 @@ function Applications_A() {
 
   if (user.id === null) return <Redirect to="/" />;
   if (myApplication[0]) {
+    localStorage.setItem("Selected", 'true');
     return (
       <Container>
         <Navbar_A />
@@ -68,7 +69,7 @@ function Applications_A() {
           {myApplication
             .map((o) => (
               <Col md={5}>
-                <Card className="mb-5">
+                <Card className="mb-5 loginform3">
                   <CardHeader>
                     <h3> {o.jobOpening.title}</h3>
                   </CardHeader>
@@ -100,13 +101,17 @@ function Applications_A() {
   return (
     <Container>
       <Navbar_A />
+      <div className="d-flex justify-content-center">
+        <br></br>
+        <h3>Your Applications</h3>
+      </div>
       {err && <Alert color="danger">{err}</Alert>}
       <Row className="d-flex justify-content-center">
         {applications
           .filter((d) => d.state === "shortlisted")
           .map((o) => (
             <Col md={5}>
-              <Card className="mb-5">
+              <Card className="mb-5 loginform3">
                 <CardHeader>
                   <h3> {o.jobOpening.title}</h3>
                 </CardHeader>
@@ -118,7 +123,7 @@ function Applications_A() {
                   </ul>
                 </CardBody>
                 <CardFooter>
-                  <Alert color="info">Shortlisted</Alert>
+                  <Alert color="success">Shortlisted</Alert>
                 </CardFooter>
               </Card>
             </Col>
@@ -127,7 +132,7 @@ function Applications_A() {
           .filter((d) => d.state === "applied")
           .map((o) => (
             <Col md={5}>
-              <Card className="mb-5">
+              <Card className="mb-5 loginform3">
                 <CardHeader>
                   <h3> {o.jobOpening.title}</h3>
                 </CardHeader>
@@ -139,7 +144,7 @@ function Applications_A() {
                   </ul>
                 </CardBody>
                 <CardFooter>
-                  <Alert color="secondary">Applied</Alert>
+                  <Alert color="info">Applied</Alert>
                 </CardFooter>
               </Card>
             </Col>
@@ -149,7 +154,7 @@ function Applications_A() {
           .filter((d) => d.state === "rejected")
           .map((o) => (
             <Col md={5}>
-              <Card className="mb-5">
+              <Card className="mb-5 loginform3">
                 <CardHeader>
                   <h3> {o.jobOpening.title}</h3>
                 </CardHeader>
@@ -161,7 +166,7 @@ function Applications_A() {
                   </ul>
                 </CardBody>
                 <CardFooter>
-                  <Alert color="light">Rejected</Alert>
+                  <Alert color="secondary">Rejected</Alert>
                 </CardFooter>
               </Card>
             </Col>

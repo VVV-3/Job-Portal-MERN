@@ -1,8 +1,0 @@
-○ Note that for each job listing where the applicant has already applied to, the apply
-button should be changed to “Applied” 
-
-○ For a job listing with the maximum number of applications reached or positions filled,
-the “Apply” button should be changed to “Full” 
-
-For each applicant, there must ​ NOT​ be more than 10 open applications. An error
-popup should appear in case the applicant tries to apply to more.

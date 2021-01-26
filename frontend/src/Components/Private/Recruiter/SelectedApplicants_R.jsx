@@ -4,8 +4,9 @@ import { useHistory, Redirect } from "react-router-dom";
 import { UserContext } from "App";
 import axios from "axios";
 import Navbar_R from "./Navbar";
-import SortBarApplications from "./SortBarApplications";
+import SortBarSelectedApplications from "./SortBarSelectedApplicants_R";
 import SubmitProcess from "./SubmitProcess";
+import Rate from "./Rate";
 import {
   Container,
   Row,
@@ -27,51 +28,20 @@ function JobOpenings_A() {
   const { user, setUser } = useContext(UserContext);
   const [applications, setApplications] = useState([]);
   const [err, setErr] = useState(false);
-  const jobId = localStorage.getItem("jobOpeningId");
+  const jobId = user.id;
   const [mp1, setMp1] = useState(null);
-
-  function refreshPage() {
-    window.location.reload(false);
-  }
-
-  function rejectjob(id) {
-    axios
-      .post(
-        `/api/application/edit/${id}`,
-        { state: "rejected" },
-        {
-          headers: { "Content-Type": "application/json" },
-        }
-      )
-      .then((res) => {
-        console.log("rejected");
-      });
-    console.log(id);
-    refreshPage();
-  }
+  var Dat = new Date();
 
   useEffect(() => {
+    console.log("date", Date.now);
     axios
       .get("/api/application/find")
       .then((res) => {
         setApplications(
           res.data.filter(
             (d) =>
-              d.state !== "rejected" &&
-              d.state !== "selected" &&
-              d.jobOpening._id === jobId
+              d.state === "selected" && d.jobOpening.recruiter._id === jobId
           )
-        );
-        setMp1(
-          res.data.filter(
-            (d) => d.state === "selected" && d.jobOpening._id === jobId
-          ).length
-        );
-        console.log(
-          "hehe",
-          res.data.filter(
-            (d) => d.state === "selected" && d.jobOpening._id === jobId
-          ).length
         );
       })
       .catch((err) => {
@@ -90,8 +60,8 @@ function JobOpenings_A() {
   // //sort logic
   useEffect(() => {
     const sortOrders = {
-      name: (o) => o,
-      doa: (a, b) => a.doa - b.doa,
+      name: (o) => o ,
+      doj: (a, b) => a.doj - b.doj,
       rating: (a, b) =>
         a.applicant.rating.numerator / a.applicant.rating.denominator -
         b.applicant.rating.numerator / b.applicant.rating.denominator,
@@ -121,7 +91,7 @@ function JobOpenings_A() {
       <br></br>
       <hr />
       <br></br>
-      <SortBarApplications
+      <SortBarSelectedApplications
         setSortOrder={setSortOrder}
         setDescending={setDescending}
         descending={descending}
@@ -129,7 +99,7 @@ function JobOpenings_A() {
       <hr />
       <br></br>
       <div className="d-flex justify-content-center">
-        <h3>Applicants</h3>
+        <h3>Your Selected Applicants</h3>
       </div>
       <Row className="d-flex justify-content-center">
         {filteredList.map((a, i) => (
@@ -140,35 +110,31 @@ function JobOpenings_A() {
               </CardHeader>
               <CardBody>
                 <ul key="i">
-                  <li>
+                  {/* <li>
                     Applicant Skills :{" "}
                     {a.applicant.skills.map((s) => (
                       <span> {s.name} &nbsp;</span>
                     ))}
-                  </li>
-                  <li>Date of Application: {a.doa}</li>
+                  </li> */}
+                  <li>Date of Joining: {a.doj}</li>
                   {/* <li>Education:</li> */}
-                  <li>SOP : {a.sop}</li>
+                  <li>Job Title Accepted into : {a.jobOpening.title}</li>
                   <li>
-                    Rating :{" "}
+                    Rating of Applicant :{" "}
                     {a.applicant.rating.numerator /
                       (a.applicant.rating.denominator || 1)}
                   </li>
-                  <li>Current Status : {a.state}</li>
+                  {/* <li>Current Status : {a.state}</li> */}
                 </ul>
               </CardBody>
               <CardFooter>
                 <div className="d-flex justify-content-end">
-                  <Button color="danger" onClick={() => rejectjob(a._id)}>
-                    Reject
-                  </Button>
-                  <SubmitProcess
-                    jId={jobId}
-                    apId={a.applicant._id}
-                    aId={a._id}
-                    aState={a.state}
-                    mp={a.jobOpening.maxPositions}
-                    mp1={mp1}
+                  <Rate
+                    aId={a.applicant._id}
+                    applicationId={a._id}
+                    jrate={a.jrate}
+                    numerator={a.applicant.rating.numerator}
+                    denominator={a.applicant.rating.denominator}
                   />
                 </div>
               </CardFooter>

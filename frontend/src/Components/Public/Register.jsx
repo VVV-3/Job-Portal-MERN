@@ -1,8 +1,7 @@
 import { useState, useContext } from "react";
 import { useForm } from "react-hook-form";
-import { useHistory, Redirect } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import axios from "axios";
-import "../../App.css";
 import {
   Form,
   FormGroup,
@@ -15,6 +14,8 @@ import {
   Alert,
 } from "reactstrap";
 import { UserContext } from "App";
+import "../../App.css";
+
 
 function Register() {
   const { user, setUser } = useContext(UserContext);
@@ -29,12 +30,15 @@ function Register() {
         headers: { "Content-Type": "application/json" },
       })
       .then((res) => {
-        setUser({ email: data.email, jobType: data.jobType });
-        setTimeout(() => setErr(false), 3000);
-        if (data.jobType === "recruiter") {
-          history.push("/Register_R");
-        } else if (data.jobType === "applicant") {
-          history.push("/Register_A");
+        // setUser({email:data.email, jobType:data.jobType});
+        // setTimeout(() => setErr(false), 3000);
+        localStorage.setItem("userJobType:", data.jobType);
+        localStorage.setItem("userEmail", data.email);
+        if( data.jobType === 'recruiter' ) {
+          history.push('/Register_R');
+        }
+        else if( data.jobType === 'applicant') {
+          history.push('/Register_A');
         }
       })
       .catch((err) => {
@@ -43,11 +47,9 @@ function Register() {
       });
   }
 
-  if (user.id !== null) return <Redirect to="/" />;
   return (
-    <Container className='loginform'>
-      Register - 1 of 2
-      <br></br>
+    <Container className='loginform '>
+      Register - 1 of 2<br></br>
       <br></br>
       {err && <Alert color="danger">{err}</Alert>}
       <Form onSubmit={handleSubmit(onSub)}>

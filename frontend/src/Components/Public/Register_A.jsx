@@ -23,6 +23,7 @@ function Register_A() {
   const { user, setUser } = useContext(UserContext);
   const history = useHistory();
   const { register, handleSubmit, errors, control } = useForm();
+  const userEmail = localStorage.getItem("userEmail");
   const [err, setErr] = useState(false);
   const [skills, setSkills] = useState([]);
   const [eduList, setEdu] = useState([Education]);
@@ -105,7 +106,7 @@ function Register_A() {
         "/api/register/applicant",
         {
           ...data,
-          email: user.email,
+          email: userEmail,
           skills: saveSkills,
         },
         {

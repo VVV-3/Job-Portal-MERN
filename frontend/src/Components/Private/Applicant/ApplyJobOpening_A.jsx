@@ -119,7 +119,7 @@ const ModalExample = ({ jobId, applicantId, jobState, jobMaxApplicants }) => {
         setErr(error);
         setTimeout(() => setErr(false), 3000);
       });
-  }, []);
+  }, [jobId]);
   if ((!myApplication[0]) && jobState == "filled") return <Alert color="light">Job Filled</Alert>;
   if (jobState !== "closed") {
     // console.log("no", applicationsNo);

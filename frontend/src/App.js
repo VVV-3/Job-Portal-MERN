@@ -17,6 +17,7 @@ import Profile_R from "./Components/Private/Recruiter/Profile_R";
 import Jobopenings_R from "./Components/Private/Recruiter/JobOpenings_R";
 import MakeJobOpenings_R from "./Components/Private/Recruiter/MakeJobOpening_R";
 import Applications_R from "./Components/Private/Recruiter/Applications_R";
+import SelectedApplicants_R from './Components/Private/Recruiter/SelectedApplicants_R';
 
 import Logout from "Components/Public/Logout";
 
@@ -38,7 +39,7 @@ function App() {
     <UserContext.Provider value={{ user, setUser }}>
       <Switch>
         <Route exact path="/">
-          <Home />
+          <Login />
         </Route>
         <Route path="/login">
           <Login />
@@ -62,6 +63,7 @@ function App() {
         <Route path="/applications_a">
           <Applications_A />
         </Route>
+        
 
         <Route path="/profile_r">
           <Profile_R />
@@ -74,6 +76,9 @@ function App() {
         </Route>
         <Route path="/applications_r">
           <Applications_R />
+        </Route>
+        <Route path='/selectedApplicants_r'>
+          <SelectedApplicants_R/>
         </Route>
 
         <Redirect to="/" />
